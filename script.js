@@ -16,7 +16,8 @@
 
   const winModal = document.getElementById('winModal');
   const closeWin = document.getElementById('closeWin');
-  const continueBtn = document.getElementById('continueBtn');
+  const copyBtn  = document.getElementById('copyBtn');
+  const passInput= document.getElementById('passcode');
 
   let tiles = [];
   let emptyIndex = 0;
@@ -29,13 +30,8 @@
     startOverlay.style.display = 'none';
     gameRoot.classList.remove('hidden');
 
-    const imgSrc = boardEl.dataset.img || 'Halloween Puzzle.JPG';
-    try {
-      spriteURL = await preloadImage(imgSrc);
-    } catch (e) {
-      console.warn('Image preload failed, continuing anyway:', e);
-      spriteURL = encodeURI(imgSrc);
-    }
+    const imgSrc = boardEl.dataset.img || 'Halloween Puzzle.PNG';
+    spriteURL = await preloadImage(imgSrc);
     refImg.src = spriteURL;
 
     // set board grid to SIZE × SIZE (overrides CSS)
@@ -47,11 +43,11 @@
 
   newBtn.addEventListener('click', build);
   closeWin.addEventListener('click', () => winModal.classList.add('hidden'));
-  if (continueBtn) {
-    continueBtn.addEventListener('click', (e) => {
-      // Default anchor behavior navigates; no extra JS necessary
-    });
-  }
+  copyBtn.addEventListener('click', () => {
+    passInput.select(); passInput.setSelectionRange(0, 999);
+    try { document.execCommand('copy'); copyBtn.textContent = 'Copied!'; } catch {}
+    setTimeout(() => (copyBtn.textContent = 'Copy code'), 1100);
+  });
 
   // keep swipes from scrolling the page
   boardEl.addEventListener('touchmove', (e) => e.preventDefault(), {passive:false});
@@ -65,7 +61,7 @@
     do {
       perm = shuffle(goal.slice(0, COUNT - 1));
       perm.push(COUNT - 1);
-    } while (!isSolvableOdd(perm));      // 4×4: even inversions
+    } while (!isSolvableOdd(perm));      // 4×4 uses “odd inversion” rule like 5×5
 
     tiles = perm;
     emptyIndex = tiles.indexOf(COUNT - 1);
@@ -80,13 +76,9 @@
       } else {
         const x = n % SIZE;
         const y = Math.floor(n / SIZE);
-        if (spriteURL) {
-          cell.style.backgroundImage = `url("${spriteURL}")`;
-          cell.style.backgroundSize = `${SIZE*100}% ${SIZE*100}%`;
-          cell.style.backgroundPosition = `${(x/(SIZE-1))*100}% ${(y/(SIZE-1))*100}%`;
-        } else {
-          cell.style.background = 'radial-gradient(#202738, #0f172a)';
-        }
+        cell.style.backgroundImage = `url("${spriteURL}")`;
+        cell.style.backgroundSize = `${SIZE*100}% ${SIZE*100}%`;
+        cell.style.backgroundPosition = `${(x/(SIZE-1))*100}% ${(y/(SIZE-1))*100}%`;
       }
 
       cell.addEventListener('click', () => tryMove(idx));
@@ -100,11 +92,7 @@
     swapTiles(idx, emptyIndex);
     emptyIndex = idx;
     moves++; movesEl.textContent = moves;
-    if (isSolved()) showSuccess();
-  }
-
-  function showSuccess(){
-    winModal.classList.remove('hidden');
+    if (isSolved()) winModal.classList.remove('hidden');
   }
 
   function swapTiles(i, j){
