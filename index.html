@@ -11,14 +11,14 @@
   <div id="startOverlay" class="overlay">
     <div class="overlay-card">
       <h1>🪚 The Reverse Puzzle</h1>
-      <p>Medium mode — complete the <strong>4×4</strong> sliding puzzle to reveal the passcode.</p>
+      <p>Medium mode — complete the <strong>4×4</strong> sliding puzzle to proceed.</p>
       <button id="startBtn" class="btn big">Start the Challenge</button>
     </div>
   </div>
 
   <header class="top">
     <h2>🪚 The Reverse Puzzle</h2>
-    <p class="sub">Medium mode — complete the <strong>4×4</strong> sliding puzzle to reveal the passcode.</p>
+    <p class="sub">Medium mode — complete the <strong>4×4</strong> sliding puzzle to proceed.</p>
   </header>
 
   <main id="game" class="hidden">
@@ -31,7 +31,7 @@
     <!-- Puzzle + reference side by side -->
     <section class="play">
       <div class="left">
-        <div id="puzzle" class="board" data-img="Halloween Puzzle 2.PNG"></div>
+        <div id="puzzle" class="board" data-img="Halloween Puzzle.JPG"></div>
         <p class="hint">Tap or slide tiles next to the empty space.</p>
       </div>
 
@@ -42,16 +42,13 @@
     </section>
   </main>
 
-  <!-- Win Modal -->
+  <!-- Success Modal -->
   <div id="winModal" class="modal hidden" role="dialog" aria-modal="true">
     <div class="modal-card">
-      <h3>✅ Completed!</h3>
-      <p>Passcode for Jigsaw’s third clue:</p>
-      <div class="code-row">
-        <input id="passcode" class="code" value="THECRIMSONLOCK" readonly />
-        <button id="copyBtn" class="btn small">Copy code</button>
-      </div>
-      <button id="closeWin" class="btn ghost">Close</button>
+      <h3 style="margin-top:0">✅ SUCCESS!</h3>
+      <p>You’ve completed the puzzle.</p>
+      <a href="https://murresta13.github.io/consequences/" id="continueBtn" class="btn big" style="display:inline-block;text-decoration:none;text-align:center">Continue</a>
+      <button id="closeWin" class="btn ghost" style="margin-left:8px">Close</button>
     </div>
   </div>
 
